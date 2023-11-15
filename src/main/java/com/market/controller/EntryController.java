@@ -47,14 +47,12 @@ public class EntryController {
 
     @PostMapping
     public ResponseEntity<EntryDto> save(@RequestBody Entry entry) {
-        EntryDto entryDto = mapperToDto(service.save(entry));
-        return ResponseEntity.status(HttpStatus.CREATED).body(entryDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapperToDto(service.save(entry)));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<EntryDto> update(@Validated @RequestBody Entry entry, @PathVariable long id) {
-        EntryDto entryDto = mapperToDto(service.update(entry, id));
-        return ResponseEntity.status(HttpStatus.OK).body(entryDto);
+        return ResponseEntity.status(HttpStatus.OK).body(mapperToDto(service.update(entry, id)));
     }
 
     @DeleteMapping("/{id}")

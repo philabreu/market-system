@@ -107,7 +107,7 @@ public class EntryControllerTest {
         assertNotEquals(expected, actual);
     }
 
-    @Disabled
+    @Disabled("TO DO")
     public void shouldDeleteEntry(){
     }
 }
