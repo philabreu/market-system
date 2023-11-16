@@ -4,7 +4,6 @@ import com.market.dto.EntryDto;
 import com.market.model.Entry;
 import com.market.service.EntryService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -51,11 +50,7 @@ public class EntryControllerTest {
         savedEntry.setValue(10D);
         savedEntry.setEntryDate(LocalDate.now());
 
-        entryDto = new EntryDto();
-        entryDto.setName("teste");
-        entryDto.setType("credito");
-        entryDto.setValue(2D);
-        entryDto.setEntryDate(LocalDate.now());
+        entryDto = new EntryDto("teste", "credito", 2D, LocalDate.now());
     }
 
     @Test
@@ -107,7 +102,13 @@ public class EntryControllerTest {
         assertNotEquals(expected, actual);
     }
 
-    @Disabled("TO DO")
-    public void shouldDeleteEntry(){
+    @Test
+    public void shouldDeleteEntry() {
+        long id = 1L;
+
+        ResponseEntity<?> response = controller.delete(id);
+
+        verify(service, times(1)).delete(id);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 }

@@ -1,13 +1,11 @@
 package com.market.dto;
 
-import lombok.Data;
-
 import java.time.LocalDate;
 
-@Data
-public class EntryDto {
-    private String name;
-    private String type;
-    private Double value;
-    private LocalDate entryDate;
+public record EntryDto(
+        String name,
+        String type,
+        Double value,
+        LocalDate entryDate
+) {
 }

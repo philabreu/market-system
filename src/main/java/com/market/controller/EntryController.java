@@ -3,7 +3,6 @@ package com.market.controller;
 import com.market.dto.EntryDto;
 import com.market.model.Entry;
 import com.market.service.EntryService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,8 +61,9 @@ public class EntryController {
     }
 
     private static EntryDto mapperToDto(Entry entry) {
-        EntryDto entryDto = new EntryDto();
-        BeanUtils.copyProperties(entry, entryDto, "id");
-        return entryDto;
+        return new EntryDto(entry.getName(),
+                entry.getType(),
+                entry.getValue(),
+                entry.getEntryDate());
     }
 }
