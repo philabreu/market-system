@@ -9,7 +9,7 @@ Aplicação possui serviço de controle de lançamentos (funcionalidade de criar
 
 ## Como executar
 
-1. Navegar até a pasta /src
+1. Navegar até a pasta do projeto /market
 2. Rodar comando `sudo docker-compose up`
 3. Abrir no browser link do swagger: **http://localhost:8080/swagger-ui/index.html#/**
 4. Nesse link do swagger, há todos os endpoints com as funcionalidades
