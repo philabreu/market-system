@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_container
+    environment:
+      - 'POSTGRES_DB=market'
+      - 'POSTGRES_PASSWORD=alda121086'
+      - 'POSTGRES_USER=postgres'
+    ports:
+      - '5432:5432'
+    networks:
+      - postgres-network
+    volumes:
+      - /home/filipe/data/postgres:/var/lib/postgresql/data
+
+networks:
+  postgres-network:
+    driver: bridge
