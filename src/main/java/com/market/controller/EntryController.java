@@ -10,8 +10,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -22,24 +22,20 @@ public class EntryController {
 
     @GetMapping
     public ResponseEntity<List<EntryDto>> findAll() {
-        List<EntryDto> entryDtoList = new ArrayList<>();
-
-        for (Entry eachEntry : service.findAll()) {
-            EntryDto entryDto = mapperToDto(eachEntry);
-            entryDtoList.add(entryDto);
-        }
+        List<EntryDto> entryDtoList = service.findAll()
+                .stream()
+                .map(entry -> mapperToDto(entry))
+                .collect(Collectors.toList());
 
         return ResponseEntity.status(HttpStatus.OK).body(entryDtoList);
     }
 
     @GetMapping("/{entryDate}")
     public ResponseEntity<List<EntryDto>> findAllByEntryDate(@PathVariable LocalDate entryDate) {
-        List<EntryDto> entryDtoList = new ArrayList<>();
-
-        for (Entry eachEntry : service.findAllByEntryDate(entryDate)) {
-            EntryDto entryDto = mapperToDto(eachEntry);
-            entryDtoList.add(entryDto);
-        }
+        List<EntryDto> entryDtoList = service.findAllByEntryDate(entryDate)
+                .stream()
+                .map(entry -> mapperToDto(entry))
+                .collect(Collectors.toList());
 
         return ResponseEntity.status(HttpStatus.OK).body(entryDtoList);
     }
