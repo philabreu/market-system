@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -67,10 +67,10 @@ public class EntryControllerTest {
 
     @Test
     public void shouldFindAllEntries() {
-        when(service.findAll()).thenReturn(Arrays.asList(entry));
+        when(service.findAll()).thenReturn(Collections.singletonList(entry));
 
         ResponseEntity<List<EntryDto>> expected = ResponseEntity.status(HttpStatus.OK)
-                .body(Arrays.asList(entryDto));
+                .body(Collections.singletonList(entryDto));
         ResponseEntity<List<EntryDto>> actual = controller.findAll();
 
         verify(service, times(1)).findAll();
@@ -80,10 +80,10 @@ public class EntryControllerTest {
     @Test
     public void shouldFindAllByEntryDate() {
         when(service.findAllByEntryDate(LocalDate.now())).
-                thenReturn(Arrays.asList(entry));
+                thenReturn(Collections.singletonList(entry));
 
         ResponseEntity<List<EntryDto>> expected = ResponseEntity.status(HttpStatus.OK)
-                .body(Arrays.asList(entryDto));
+                .body(Collections.singletonList(entryDto));
         ResponseEntity<List<EntryDto>> actual = controller.findAllByEntryDate(LocalDate.now());
 
         verify(service, times(1)).findAllByEntryDate(LocalDate.now());

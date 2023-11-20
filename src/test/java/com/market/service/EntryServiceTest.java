@@ -10,7 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,7 +48,7 @@ public class EntryServiceTest {
 
     @Test
     public void shouldFindAllEntries() {
-        List<Entry> entryList = Arrays.asList(entry);
+        List<Entry> entryList = Collections.singletonList(entry);
         when(repository.findAll()).thenReturn(entryList);
 
         List<Entry> result = service.findAll();
@@ -58,7 +58,7 @@ public class EntryServiceTest {
 
     @Test
     public void shouldFindByEntryDate() {
-        List<Entry> entryList = Arrays.asList(entry);
+        List<Entry> entryList = Collections.singletonList(entry);
 
         when(repository.findAllByEntryDate(LocalDate.now())).thenReturn(entryList);
 

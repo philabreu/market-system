@@ -24,7 +24,7 @@ public class EntryController {
     public ResponseEntity<List<EntryDto>> findAll() {
         List<EntryDto> entryDtoList = service.findAll()
                 .stream()
-                .map(entry -> mapperToDto(entry))
+                .map(EntryController::mapperToDto)
                 .collect(Collectors.toList());
 
         return ResponseEntity.status(HttpStatus.OK).body(entryDtoList);
@@ -34,7 +34,7 @@ public class EntryController {
     public ResponseEntity<List<EntryDto>> findAllByEntryDate(@PathVariable LocalDate entryDate) {
         List<EntryDto> entryDtoList = service.findAllByEntryDate(entryDate)
                 .stream()
-                .map(entry -> mapperToDto(entry))
+                .map(EntryController::mapperToDto)
                 .collect(Collectors.toList());
 
         return ResponseEntity.status(HttpStatus.OK).body(entryDtoList);
