@@ -1,4 +1,4 @@
-package com.market.exception;
+package com.market.business.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

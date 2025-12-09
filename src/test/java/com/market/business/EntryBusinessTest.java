@@ -1,7 +1,7 @@
-package com.market.service;
+package com.market.business;
 
-import com.market.model.Entry;
-import com.market.repository.EntryRepository;
+import com.market.adapters.postgresdb.model.Entry;
+import com.market.business.port.EntryPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,12 +18,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class EntryServiceTest {
+public class EntryBusinessTest {
     @Mock
-    private EntryRepository repository;
+    private EntryPort entryPort;
 
     @InjectMocks
-    private EntryService service;
+    private EntryBusiness service;
 
     private Entry entry;
 
@@ -49,7 +49,7 @@ public class EntryServiceTest {
     @Test
     public void shouldFindAllEntries() {
         List<Entry> entryList = Collections.singletonList(entry);
-        when(repository.findAll()).thenReturn(entryList);
+        when(entryPort.findAll()).thenReturn(entryList);
 
         List<Entry> result = service.findAll();
 
@@ -60,7 +60,7 @@ public class EntryServiceTest {
     public void shouldFindByEntryDate() {
         List<Entry> entryList = Collections.singletonList(entry);
 
-        when(repository.findAllByEntryDate(LocalDate.now())).thenReturn(entryList);
+        when(entryPort.findAllByEntryDate(LocalDate.now())).thenReturn(entryList);
 
         List<Entry> result = service.findAllByEntryDate(LocalDate.now());
 
@@ -69,7 +69,7 @@ public class EntryServiceTest {
 
     @Test
     public void shouldSaveEntry() {
-        when(repository.save(entry)).thenReturn(entry);
+        when(entryPort.save(entry)).thenReturn(entry);
 
         Entry result = service.save(entry);
 
@@ -77,27 +77,25 @@ public class EntryServiceTest {
     }
 
     @Test
-    public void shouldUpdateEntry(){
-        when(repository.findById(1L)).thenReturn(Optional.of(savedEntry));
-        when(repository.save(entry)).thenAnswer(mock -> mock.getArgument(0));
+    public void shouldUpdateEntry() {
+        when(entryPort.findById(1L)).thenReturn(Optional.of(savedEntry));
+        when(entryPort.save(entry)).thenAnswer(mock -> mock.getArgument(0));
 
         Entry updatedEntry = service.update(entry, 1L);
 
-        verify(repository).findById(1L);
-        verify(repository).save(entry);
+        verify(entryPort).findById(1L);
+        verify(entryPort).save(entry);
 
         assertEquals("credito", updatedEntry.getType());
     }
 
     @Test
-    public void shouldDeleteEntry(){
+    public void shouldDeleteEntry() {
         long id = 1L;
 
-        doNothing().when(repository).deleteById(id);
+        doNothing().when(entryPort).delete(id);
         service.delete(id);
 
-        verify(repository, times(1)).deleteById(id);
+        verify(entryPort, times(1)).delete(id);
     }
-
-
 }

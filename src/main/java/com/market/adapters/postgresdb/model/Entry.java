@@ -1,4 +1,4 @@
-package com.market.model;
+package com.market.adapters.postgresdb.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class Entry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "name")
     private String name;

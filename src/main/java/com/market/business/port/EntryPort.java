@@ -1,20 +1,30 @@
-package com.market.repository;
+package com.market.business.port;
 
-import com.market.model.Entry;
+import com.market.adapters.postgresdb.model.Entry;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
-@Repository
-public interface EntryRepository extends JpaRepository<Entry, Long> {
+
+public interface EntryPort {
+    List<Entry> findAll();
+
+    Optional<Entry> findById(Long id);
+
     /**
      * Cache foi usado para requisito de 500 requisicoes por segundo.
+     *
      * @param entryDate
      * @return
      */
     @Cacheable("entries")
     List<Entry> findAllByEntryDate(LocalDate entryDate);
+
+    Entry save(Entry entry);
+
+    Entry update(Entry entry, Long id);
+
+    void delete(Long id);
 }
