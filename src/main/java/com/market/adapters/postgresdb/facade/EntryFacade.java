@@ -15,40 +15,40 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Component
 public class EntryFacade implements EntryPort {
-    private final EntryPostgresDB entryPostgresDB;
+    private final EntryPostgresDB repository;
 
     @Override
     public List<Entry> findAll() {
-        return (List<Entry>) entryPostgresDB.findAll();
+        return (List<Entry>) repository.findAll();
     }
 
     @Override
     public Optional<Entry> findById(Long id) {
-        return entryPostgresDB.findById(id);
+        return repository.findById(id);
     }
 
     @Override
     public List<Entry> findAllByEntryDate(LocalDate entryDate) {
-        return List.of();
+        return repository.findAllByEntryDate(entryDate);
     }
 
     @Override
     public Entry save(Entry entry) {
-        return null;
+        return repository.save(entry);
     }
 
     @Override
     public Entry update(Entry entry, Long id) {
-        Entry searchedEntry = entryPostgresDB.findById(id)
+        Entry searchedEntry = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("lançamento não encontrado com id: " + id));
 
         BeanUtils.copyProperties(entry, searchedEntry, "id");
 
-        return null;
+        return repository.save(searchedEntry);
     }
 
     @Override
     public void delete(Long id) {
-
+        repository.deleteById(id);
     }
 }

@@ -1,5 +1,7 @@
 package com.market.business;
 
+import com.market.adapters.controller.model.GetEntryResponse;
+import com.market.adapters.controller.model.PostEntryRequest;
 import com.market.adapters.postgresdb.model.Entry;
 import com.market.business.port.EntryPort;
 import lombok.RequiredArgsConstructor;
@@ -14,16 +16,35 @@ public class EntryBusiness {
 
     private final EntryPort entryPort;
 
-    public List<Entry> findAll() {
-        return entryPort.findAll();
+    private static GetEntryResponse mapperToDto(Entry entry) {
+        return new GetEntryResponse(entry.getName(),
+                entry.getType(),
+                entry.getValue(),
+                entry.getEntryDate());
     }
 
-    public List<Entry> findAllByEntryDate(LocalDate entryDate) {
-        return entryPort.findAllByEntryDate(entryDate);
+    public List<GetEntryResponse> findAll() {
+        return entryPort.findAll()
+                .stream()
+                .map(EntryBusiness::mapperToDto)
+                .toList();
     }
 
-    public Entry save(Entry entry) {
-        return entryPort.save(entry);
+    public List<GetEntryResponse> findAllByEntryDate(LocalDate entryDate) {
+        return entryPort.findAllByEntryDate(entryDate)
+                .stream()
+                .map(EntryBusiness::mapperToDto)
+                .toList();
+    }
+
+    public void save(PostEntryRequest request) {
+        Entry entry = new Entry(null,
+                request.name(),
+                request.type(),
+                request.value(),
+                request.entryDate());
+
+        entryPort.save(entry);
     }
 
     public Entry update(Entry entry, Long id) {
@@ -31,7 +52,6 @@ public class EntryBusiness {
     }
 
     public void delete(Long id) {
-
         entryPort.delete(id);
     }
 }

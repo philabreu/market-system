@@ -1,13 +1,17 @@
 package com.market.adapters.postgresdb.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
-@Data
 @Table
 @Entity(name = "entry")
+@AllArgsConstructor
+@Getter
+@Setter
 public class Entry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
