@@ -1,6 +1,7 @@
 package com.market.business.port;
 
-import com.market.adapters.postgresdb.model.Entry;
+import com.market.adapters.postgresdb.model.EntryModel;
+import com.market.business.model.Entry;
 import org.springframework.cache.annotation.Cacheable;
 
 import java.time.LocalDate;
@@ -9,9 +10,11 @@ import java.util.Optional;
 
 
 public interface EntryPort {
-    List<Entry> findAll();
+    void save(Entry entry);
 
-    Optional<Entry> findById(Long id);
+    Optional<EntryModel> findById(Long id);
+
+    List<EntryModel> findAll();
 
     /**
      * Cache foi usado para requisito de 500 requisicoes por segundo.
@@ -20,11 +23,9 @@ public interface EntryPort {
      * @return
      */
     @Cacheable("entries")
-    List<Entry> findAllByEntryDate(LocalDate entryDate);
+    List<EntryModel> findAllByEntryDate(LocalDate entryDate);
 
-    Entry save(Entry entry);
-
-    Entry update(Entry entry, Long id);
+    void update(Entry entry, Long id);
 
     void delete(Long id);
 }

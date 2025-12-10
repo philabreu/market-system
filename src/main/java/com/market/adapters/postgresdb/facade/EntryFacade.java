@@ -1,8 +1,9 @@
 package com.market.adapters.postgresdb.facade;
 
 import com.market.adapters.postgresdb.EntryPostgresDB;
-import com.market.adapters.postgresdb.model.Entry;
+import com.market.adapters.postgresdb.model.EntryModel;
 import com.market.business.exception.ResourceNotFoundException;
+import com.market.business.model.Entry;
 import com.market.business.port.EntryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -18,33 +19,39 @@ public class EntryFacade implements EntryPort {
     private final EntryPostgresDB repository;
 
     @Override
-    public List<Entry> findAll() {
-        return (List<Entry>) repository.findAll();
+    public void save(Entry request) {
+        EntryModel entry = new EntryModel(null,
+                request.name(),
+                request.type(),
+                request.value(),
+                request.entryDate());
+
+        repository.save(entry);
     }
 
     @Override
-    public Optional<Entry> findById(Long id) {
+    public Optional<EntryModel> findById(Long id) {
         return repository.findById(id);
     }
 
     @Override
-    public List<Entry> findAllByEntryDate(LocalDate entryDate) {
+    public List<EntryModel> findAll() {
+        return (List<EntryModel>) repository.findAll();
+    }
+
+    @Override
+    public List<EntryModel> findAllByEntryDate(LocalDate entryDate) {
         return repository.findAllByEntryDate(entryDate);
     }
 
     @Override
-    public Entry save(Entry entry) {
-        return repository.save(entry);
-    }
-
-    @Override
-    public Entry update(Entry entry, Long id) {
-        Entry searchedEntry = repository.findById(id)
+    public void update(Entry entry, Long id) {
+        EntryModel searchedEntry = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("lançamento não encontrado com id: " + id));
 
         BeanUtils.copyProperties(entry, searchedEntry, "id");
 
-        return repository.save(searchedEntry);
+        repository.save(searchedEntry);
     }
 
     @Override

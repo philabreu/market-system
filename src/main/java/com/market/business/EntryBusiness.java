@@ -1,8 +1,7 @@
 package com.market.business;
 
 import com.market.adapters.controller.model.GetEntryResponse;
-import com.market.adapters.controller.model.PostEntryRequest;
-import com.market.adapters.postgresdb.model.Entry;
+import com.market.business.model.Entry;
 import com.market.business.port.EntryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,39 +15,37 @@ public class EntryBusiness {
 
     private final EntryPort entryPort;
 
-    private static GetEntryResponse mapperToDto(Entry entry) {
-        return new GetEntryResponse(entry.getName(),
-                entry.getType(),
-                entry.getValue(),
-                entry.getEntryDate());
+    public void save(Entry request) {
+        entryPort.save(request);
     }
 
+    public Entry findById(Long id) {
+        return entryPort.findById(id)
+                .orElseThrow();
+    }
+
+    //TODO: REFATORAR PARA RETORNAR INTERFACE
     public List<GetEntryResponse> findAll() {
         return entryPort.findAll()
                 .stream()
-                .map(EntryBusiness::mapperToDto)
+                .map(item -> new GetEntryResponse(
+                        item.getName(), item.getType(), item.getValue(), item.getEntryDate())
+                )
                 .toList();
     }
 
+    //TODO: REFATORAR PARA RETORNAR INTERFACE
     public List<GetEntryResponse> findAllByEntryDate(LocalDate entryDate) {
         return entryPort.findAllByEntryDate(entryDate)
                 .stream()
-                .map(EntryBusiness::mapperToDto)
+                .map(item -> new GetEntryResponse(
+                        item.getName(), item.getType(), item.getValue(), item.getEntryDate())
+                )
                 .toList();
     }
 
-    public void save(PostEntryRequest request) {
-        Entry entry = new Entry(null,
-                request.name(),
-                request.type(),
-                request.value(),
-                request.entryDate());
-
-        entryPort.save(entry);
-    }
-
-    public Entry update(Entry entry, Long id) {
-        return entryPort.update(entry, id);
+    public void update(Entry request, Long id) {
+        entryPort.update(request, id);
     }
 
     public void delete(Long id) {

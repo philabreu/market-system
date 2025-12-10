@@ -2,7 +2,7 @@ package com.market.controller;
 
 import com.market.adapters.controller.EntryController;
 import com.market.adapters.controller.model.GetEntryResponse;
-import com.market.adapters.postgresdb.model.Entry;
+import com.market.adapters.postgresdb.model.EntryModel;
 import com.market.business.EntryBusiness;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -21,22 +21,22 @@ public class EntryControllerTest {
     @InjectMocks
     private EntryController controller;
 
-    private Entry entry;
+    private EntryModel entry;
 
-    private Entry savedEntry;
+    private EntryModel savedEntry;
 
     private GetEntryResponse getEntryResponse;
 
     @BeforeEach
     public void setup() {
-//        entry = new Entry();
+//        entry = new EntryModel();
 //        entry.setId(1L);
 //        entry.setName("teste");
 //        entry.setType("credito");
 //        entry.setValue(2D);
 //        entry.setEntryDate(LocalDate.now());
 //
-//        savedEntry = new Entry();
+//        savedEntry = new EntryModel();
 //        savedEntry.setId(1L);
 //        savedEntry.setName("teste");
 //        savedEntry.setType("credito");

@@ -1,11 +1,12 @@
 package com.market.adapters.controller.model;
 
+import com.market.business.model.Entry;
+
 import java.time.LocalDate;
 
 public record GetEntryResponse(
         String name,
         String type,
         Double value,
-        LocalDate entryDate
-) {
+        LocalDate entryDate) implements Entry {
 }

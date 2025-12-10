@@ -4,7 +4,7 @@ import com.market.business.model.Entry;
 
 import java.time.LocalDate;
 
-public record PostEntryRequest(
+public record PutEntryRequest(
         String name,
         String type,
         Double value,

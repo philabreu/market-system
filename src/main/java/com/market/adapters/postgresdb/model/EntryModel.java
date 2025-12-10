@@ -1,5 +1,6 @@
 package com.market.adapters.postgresdb.model;
 
+import com.market.business.model.Entry;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Entry {
+public class EntryModel implements Entry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,4 +29,24 @@ public class Entry {
 
     @Column(name = "entry_date")
     private LocalDate entryDate;
+
+    @Override
+    public String name() {
+        return name;
+    }
+
+    @Override
+    public String type() {
+        return type;
+    }
+
+    @Override
+    public Double value() {
+        return value;
+    }
+
+    @Override
+    public LocalDate entryDate() {
+        return entryDate;
+    }
 }
