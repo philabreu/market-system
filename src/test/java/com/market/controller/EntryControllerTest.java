@@ -1,107 +1,77 @@
 package com.market.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.market.adapters.controller.EntryController;
-import com.market.adapters.controller.model.GetEntryResponse;
-import com.market.adapters.postgresdb.model.EntryModel;
+import com.market.adapters.controller.model.PostEntryRequest;
+import com.market.adapters.controller.model.PutEntryRequest;
 import com.market.business.EntryBusiness;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 
-@Disabled
-@ExtendWith(MockitoExtension.class)
+import java.time.LocalDate;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest(EntryController.class)
 public class EntryControllerTest {
-    @Mock
-    private EntryBusiness service;
+    @Autowired
+    private MockMvc mockMvc;
 
-    @InjectMocks
-    private EntryController controller;
+    @Autowired
+    private ObjectMapper mapper;
 
-    private EntryModel entry;
+    @MockBean
+    private EntryBusiness entryBusiness;
 
-    private EntryModel savedEntry;
+    private static final String FIND_BY_ID = "/entry/{id}";
+    private static final String UPDATE_BY_ID = "/entry/{id}";
+    private static final String DELETE_BY_ID = "/entry/{id}";
+    private static final String FIND_BY_ENTRY_DATE = "/entry/date/{entryDate}";
+    private static final Long ID = 1L;
 
-    private GetEntryResponse getEntryResponse;
+    @Test
+    public void shouldSaveEntry() throws Exception {
+        PostEntryRequest postEntryRequest = new PostEntryRequest("name", "type", 10.0, LocalDate.now());
 
-    @BeforeEach
-    public void setup() {
-//        entry = new EntryModel();
-//        entry.setId(1L);
-//        entry.setName("teste");
-//        entry.setType("credito");
-//        entry.setValue(2D);
-//        entry.setEntryDate(LocalDate.now());
-//
-//        savedEntry = new EntryModel();
-//        savedEntry.setId(1L);
-//        savedEntry.setName("teste");
-//        savedEntry.setType("credito");
-//        savedEntry.setValue(10D);
-//        savedEntry.setEntryDate(LocalDate.now());
-//
-//        getEntryResponse = new GetEntryResponse("teste", "credito", 2D, LocalDate.now());
+        mockMvc.perform(post("/entry")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsBytes(postEntryRequest)))
+                .andExpect(status().isOk());
     }
 
     @Test
-    public void shouldSaveEntry() {
-//        when(service.save(entry)).thenReturn(entry);
-//
-//        ResponseEntity<GetEntryResponse> expected = ResponseEntity.status(HttpStatus.CREATED)
-//                .body(getEntryResponse);
-//        ResponseEntity<GetEntryResponse> actual = controller.save(entry);
-//
-//        verify(service, times(1)).save(entry);
-//        assertEquals(expected, actual);
+    public void shouldFindById() throws Exception {
+        mockMvc.perform(get(FIND_BY_ID, ID))
+                .andExpect(status().isOk());
     }
 
     @Test
-    public void shouldFindAllEntries() {
-//        when(service.findAll()).thenReturn(Collections.singletonList(entry));
-//
-//        ResponseEntity<List<GetEntryResponse>> expected = ResponseEntity.status(HttpStatus.OK)
-//                .body(Collections.singletonList(getEntryResponse));
-//        ResponseEntity<List<GetEntryResponse>> actual = controller.findAll();
-//
-//        verify(service, times(1)).findAll();
-//        assertEquals(expected, actual);
+    public void shouldFindAllEntries() throws Exception {
+        mockMvc.perform(get("/entry")).andExpect(status().isOk());
     }
 
     @Test
-    public void shouldFindAllByEntryDate() {
-//        when(service.findAllByEntryDate(LocalDate.now())).
-//                thenReturn(Collections.singletonList(entry));
-//
-//        ResponseEntity<List<GetEntryResponse>> expected = ResponseEntity.status(HttpStatus.OK)
-//                .body(Collections.singletonList(getEntryResponse));
-//        ResponseEntity<List<GetEntryResponse>> actual = controller.findAllByEntryDate(LocalDate.now());
-//
-//        verify(service, times(1)).findAllByEntryDate(LocalDate.now());
-//        assertEquals(expected, actual);
+    public void shouldFindAllByEntryDate() throws Exception {
+        mockMvc.perform(get(FIND_BY_ENTRY_DATE, LocalDate.now())).andExpect(status().isOk());
     }
 
     @Test
-    public void shouldUpdateEntry() {
-//        when(service.update(entry, 1L)).thenReturn(savedEntry);
-//
-//        ResponseEntity<GetEntryResponse> expected = ResponseEntity.status(HttpStatus.OK)
-//                .body(getEntryResponse);
-//        ResponseEntity<GetEntryResponse> actual = controller.update(entry, 1);
-//
-//        verify(service, times(1)).update(entry, 1L);
-//        assertNotEquals(expected, actual);
+    public void shouldUpdateEntry() throws Exception {
+        PutEntryRequest putEntryRequest = new PutEntryRequest("name", "type", 10.0, LocalDate.now());
+
+        mockMvc.perform(put(UPDATE_BY_ID, ID)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsBytes(putEntryRequest)))
+                .andExpect(status().isOk());
     }
 
     @Test
-    public void shouldDeleteEntry() {
-//        long id = 1L;
-//
-//        ResponseEntity<?> response = controller.delete(id);
-//
-//        verify(service, times(1)).delete(id);
-//        assertEquals(HttpStatus.OK, response.getStatusCode());
+    public void shouldDeleteEntry() throws Exception {
+        mockMvc.perform(delete(DELETE_BY_ID, ID)).andExpect(status().isOk());
     }
 }

@@ -1,6 +1,7 @@
 package com.market.business;
 
 import com.market.adapters.controller.model.GetEntryResponse;
+import com.market.business.exception.ResourceNotFoundException;
 import com.market.business.model.Entry;
 import com.market.business.port.EntryPort;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class EntryBusiness {
 
     public Entry findById(Long id) {
         return entryPort.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new ResourceNotFoundException("resource not found"));
     }
 
     //TODO: REFATORAR PARA RETORNAR INTERFACE

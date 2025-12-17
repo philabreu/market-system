@@ -5,7 +5,9 @@ import com.market.adapters.controller.model.PostEntryRequest;
 import com.market.adapters.controller.model.PutEntryRequest;
 import com.market.business.EntryBusiness;
 import com.market.business.model.Entry;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +26,8 @@ public class EntryController {
         entryBusiness.save(request);
     }
 
-    @GetMapping("/id")
-    public Entry findById(Long id) {
+    @GetMapping("/{id}")
+    public Entry findById(@PathVariable @NotNull Long id) {
         return entryBusiness.findById(id);
     }
 
@@ -34,18 +36,19 @@ public class EntryController {
         return entryBusiness.findAll();
     }
 
-    @GetMapping("/{entryDate}")
-    public List<GetEntryResponse> findAllByEntryDate(@PathVariable LocalDate entryDate) {
+    @GetMapping("/date/{entryDate}")
+    public List<GetEntryResponse> findAllByEntryDate(
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @NotNull LocalDate entryDate) {
         return entryBusiness.findAllByEntryDate(entryDate);
     }
 
     @PutMapping("/{id}")
-    public void update(@Validated @RequestBody PutEntryRequest request, @PathVariable Long id) {
+    public void update(@Validated @RequestBody PutEntryRequest request, @PathVariable @NotNull Long id) {
         entryBusiness.update(request, id);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable @NotNull Long id) {
         entryBusiness.delete(id);
     }
 }

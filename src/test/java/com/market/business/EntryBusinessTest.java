@@ -1,95 +1,103 @@
 package com.market.business;
 
+import com.market.adapters.controller.model.GetEntryResponse;
 import com.market.adapters.postgresdb.model.EntryModel;
+import com.market.business.exception.ResourceNotFoundException;
+import com.market.business.model.Entry;
 import com.market.business.port.EntryPort;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class EntryBusinessTest {
+class EntryBusinessTest {
+    @InjectMocks
+    private EntryBusiness business;
+
     @Mock
     private EntryPort entryPort;
 
-    @InjectMocks
-    private EntryBusiness service;
-
+    @Mock
     private EntryModel entry;
 
-    private EntryModel savedEntry;
+    private static final Long ID = 1L;
 
-    @BeforeEach
-    public void setup() {
-//        entry = new EntryModel();
-//        entry.setId(1L);
-//        entry.setName("teste");
-//        entry.setType("credito");
-//        entry.setValue(1D);
-//        entry.setEntryDate(LocalDate.now());
-//
-//        savedEntry = new EntryModel();
-//        savedEntry.setId(1L);
-//        savedEntry.setName("teste");
-//        savedEntry.setType("debito");
-//        savedEntry.setValue(23D);
-//        savedEntry.setEntryDate(LocalDate.now());
+    @Test
+    void shouldFindAllEntries() {
+        when(entryPort.findAll()).thenReturn(List.of(entry));
+
+        List<GetEntryResponse> responseList = business.findAll();
+
+        assertNotNull(responseList);
+
+        verify(entryPort, times(1)).findAll();
     }
 
     @Test
-    public void shouldFindAllEntries() {
-//        List<EntryModel> entryList = Collections.singletonList(entry);
-//        when(entryPort.findAll()).thenReturn(entryList);
-//
-//        List<EntryModel> result = service.findAll();
-//
-//        assertEquals(entryList, result);
+    void shouldFindByEntryDate() {
+        when(entryPort.findAllByEntryDate(LocalDate.now())).thenReturn(List.of(entry));
+
+        List<GetEntryResponse> result = business.findAllByEntryDate(LocalDate.now());
+
+        assertNotNull(result);
+
+        verify(entryPort, times(1)).findAllByEntryDate(LocalDate.now());
     }
 
     @Test
-    public void shouldFindByEntryDate() {
-//        List<EntryModel> entryList = Collections.singletonList(entry);
-//
-//        when(entryPort.findAllByEntryDate(LocalDate.now())).thenReturn(entryList);
-//
-//        List<EntryModel> result = service.findAllByEntryDate(LocalDate.now());
-//
-//        assertEquals(entryList, result);
+    void shouldFindById() {
+        when(entryPort.findById(ID)).thenReturn(Optional.of(entry));
+
+        Entry result = business.findById(ID);
+
+        assertNotNull(result);
+
+        verify(entryPort, times(1)).findById(ID);
     }
 
     @Test
-    public void shouldSaveEntry() {
-//        when(entryPort.save(entry)).thenReturn(entry);
-//
-//        EntryModel result = service.save(entry);
-//
-//        assertEquals(entry, result);
+    void shouldThrowExceptionWhenNotFoundEntry() {
+        when(entryPort.findById(ID)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> business.findById(ID));
+
+        verify(entryPort, times(1)).findById(ID);
     }
 
     @Test
-    public void shouldUpdateEntry() {
-//        when(entryPort.findById(1L)).thenReturn(Optional.of(savedEntry));
-//        when(entryPort.save(entry)).thenAnswer(mock -> mock.getArgument(0));
-//
-//        EntryModel updatedEntry = service.update(entry, 1L);
-//
-//        verify(entryPort).findById(1L);
-//        verify(entryPort).save(entry);
-//
-//        assertEquals("credito", updatedEntry.getType());
+    void shouldSaveEntry() {
+        doNothing().when(entryPort).save(entry);
+
+        business.save(entry);
+
+        verify(entryPort, times(1)).save(entry);
     }
 
     @Test
-    public void shouldDeleteEntry() {
-        long id = 1L;
+    void shouldUpdateEntry() {
+        doNothing().when(entryPort).update(entry, ID);
 
-        doNothing().when(entryPort).delete(id);
-        service.delete(id);
+        business.update(entry, ID);
 
-        verify(entryPort, times(1)).delete(id);
+        verify(entryPort, times(1)).update(entry, ID);
+    }
+
+    @Test
+    void shouldDeleteEntry() {
+        doNothing().when(entryPort).delete(ID);
+
+        business.delete(ID);
+
+        verify(entryPort, times(1)).delete(ID);
     }
 }
