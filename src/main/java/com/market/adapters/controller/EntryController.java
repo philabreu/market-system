@@ -6,7 +6,6 @@ import com.market.adapters.controller.model.PutEntryRequest;
 import com.market.business.EntryBusiness;
 import com.market.business.model.Entry;
 import jakarta.validation.constraints.NotNull;
-import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +16,12 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/entry")
-@RequiredArgsConstructor
 public class EntryController {
     private final EntryBusiness entryBusiness;
+
+    public EntryController(EntryBusiness entryBusiness) {
+        this.entryBusiness = entryBusiness;
+    }
 
     @PostMapping
     public void save(@Validated @RequestBody PostEntryRequest request) {
