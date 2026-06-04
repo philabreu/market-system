@@ -38,7 +38,7 @@ public class EntryFacade implements EntryPort {
 
     @Override
     public List<EntryModel> findAll() {
-        return (List<EntryModel>) repository.findAll();
+        return repository.findAll();
     }
 
     @Override
