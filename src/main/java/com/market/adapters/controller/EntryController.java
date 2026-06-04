@@ -35,13 +35,23 @@ public class EntryController {
 
     @GetMapping
     public List<GetEntryResponse> findAll() {
-        return entryBusiness.findAll();
+        return entryBusiness.findAll()
+                .stream()
+                .map(item -> new GetEntryResponse(
+                        item.name(), item.type(), item.value(), item.entryDate())
+                )
+                .toList();
     }
 
     @GetMapping("/date/{entryDate}")
     public List<GetEntryResponse> findAllByEntryDate(
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @NotNull LocalDate entryDate) {
-        return entryBusiness.findAllByEntryDate(entryDate);
+        return entryBusiness.findAllByEntryDate(entryDate)
+                .stream()
+                .map(item -> new GetEntryResponse(
+                        item.name(), item.type(), item.value(), item.entryDate())
+                )
+                .toList();
     }
 
     @PutMapping("/{id}")

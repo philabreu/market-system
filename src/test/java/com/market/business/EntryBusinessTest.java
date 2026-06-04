@@ -1,6 +1,5 @@
 package com.market.business;
 
-import com.market.adapters.controller.model.GetEntryResponse;
 import com.market.adapters.postgresdb.model.EntryModel;
 import com.market.business.exception.ResourceNotFoundException;
 import com.market.business.model.Entry;
@@ -36,9 +35,9 @@ class EntryBusinessTest {
     void shouldFindAllEntries() {
         when(entryPort.findAll()).thenReturn(List.of(entry));
 
-        List<GetEntryResponse> responseList = business.findAll();
+        List<Entry> entryList = business.findAll();
 
-        assertNotNull(responseList);
+        assertNotNull(entryList);
 
         verify(entryPort, times(1)).findAll();
     }
@@ -47,7 +46,7 @@ class EntryBusinessTest {
     void shouldFindByEntryDate() {
         when(entryPort.findAllByEntryDate(LocalDate.now())).thenReturn(List.of(entry));
 
-        List<GetEntryResponse> result = business.findAllByEntryDate(LocalDate.now());
+        List<Entry> result = business.findAllByEntryDate(LocalDate.now());
 
         assertNotNull(result);
 

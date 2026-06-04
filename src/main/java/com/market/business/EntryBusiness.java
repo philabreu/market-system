@@ -1,6 +1,5 @@
 package com.market.business;
 
-import com.market.adapters.controller.model.GetEntryResponse;
 import com.market.business.exception.ResourceNotFoundException;
 import com.market.business.model.Entry;
 import com.market.business.port.EntryPort;
@@ -26,24 +25,12 @@ public class EntryBusiness {
                 .orElseThrow(() -> new ResourceNotFoundException("resource not found"));
     }
 
-    //TODO: REFATORAR PARA RETORNAR INTERFACE
-    public List<GetEntryResponse> findAll() {
-        return entryPort.findAll()
-                .stream()
-                .map(item -> new GetEntryResponse(
-                        item.name(), item.type(), item.value(), item.entryDate())
-                )
-                .toList();
+    public List<Entry> findAll() {
+        return entryPort.findAll();
     }
 
-    //TODO: REFATORAR PARA RETORNAR INTERFACE
-    public List<GetEntryResponse> findAllByEntryDate(LocalDate entryDate) {
-        return entryPort.findAllByEntryDate(entryDate)
-                .stream()
-                .map(item -> new GetEntryResponse(
-                        item.name(), item.type(), item.value(), item.entryDate())
-                )
-                .toList();
+    public List<Entry> findAllByEntryDate(LocalDate entryDate) {
+        return entryPort.findAllByEntryDate(entryDate);
     }
 
     public void update(Entry request, Long id) {

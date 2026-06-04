@@ -14,7 +14,7 @@ public interface EntryPort {
 
     Optional<EntryModel> findById(Long id);
 
-    List<EntryModel> findAll();
+    List<Entry> findAll();
 
     /**
      * Cache foi usado para requisito de 500 requisicoes por segundo.
@@ -23,7 +23,7 @@ public interface EntryPort {
      * @return
      */
     @Cacheable("entries")
-    List<EntryModel> findAllByEntryDate(LocalDate entryDate);
+    List<Entry> findAllByEntryDate(LocalDate entryDate);
 
     void update(Entry entry, Long id);
 

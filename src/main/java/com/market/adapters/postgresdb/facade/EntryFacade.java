@@ -37,13 +37,19 @@ public class EntryFacade implements EntryPort {
     }
 
     @Override
-    public List<EntryModel> findAll() {
-        return repository.findAll();
+    public List<Entry> findAll() {
+        return repository.findAll()
+                .stream()
+                .map(Entry.class::cast)
+                .toList();
     }
 
     @Override
-    public List<EntryModel> findAllByEntryDate(LocalDate entryDate) {
-        return repository.findAllByEntryDate(entryDate);
+    public List<Entry> findAllByEntryDate(LocalDate entryDate) {
+        return repository.findAllByEntryDate(entryDate)
+                .stream()
+                .map(Entry.class::cast)
+                .toList();
     }
 
     @Override
