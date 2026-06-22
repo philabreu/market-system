@@ -33,8 +33,7 @@ public class EntryModel implements Entry {
     public EntryModel() {
     }
 
-    public EntryModel(Long id, String name, String type, Double entryValue, LocalDate entryDate) {
-        this.id = id;
+    public EntryModel(String name, String type, Double entryValue, LocalDate entryDate) {
         this.name = name;
         this.type = type;
         this.entryValue = entryValue;

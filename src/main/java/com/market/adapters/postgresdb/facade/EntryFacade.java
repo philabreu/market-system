@@ -5,6 +5,8 @@ import com.market.adapters.postgresdb.model.EntryModel;
 import com.market.business.exception.ResourceNotFoundException;
 import com.market.business.model.Entry;
 import com.market.business.port.EntryPort;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -21,13 +23,7 @@ public class EntryFacade implements EntryPort {
 
     @Override
     public void save(Entry request) {
-        EntryModel entry = new EntryModel();
-        entry.setName(request.name());
-        entry.setType(request.type());
-        entry.setEntryValue(request.entryValue());
-        entry.setEntryDate(request.entryDate());
-
-        repository.save(entry);
+        repository.save(new EntryModel(request.name(), request.type(), request.entryValue(), request.entryDate()));
     }
 
     @Override
@@ -56,10 +52,7 @@ public class EntryFacade implements EntryPort {
         EntryModel searchedEntry = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("lançamento não encontrado com id: " + id));
 
-        searchedEntry.setName(entry.name());
-        searchedEntry.setType(entry.type());
-        searchedEntry.setEntryValue(entry.entryValue());
-        searchedEntry.setEntryDate(entry.entryDate());
+        BeanUtils.copyProperties(entry, searchedEntry, "id");
 
         repository.save(searchedEntry);
     }
