@@ -38,7 +38,7 @@ public class EntryController {
         return entryBusiness.findAll()
                 .stream()
                 .map(item -> new GetEntryResponse(
-                        item.name(), item.type(), item.value(), item.entryDate())
+                        item.name(), item.type(), item.entryValue(), item.entryDate())
                 )
                 .toList();
     }
@@ -49,7 +49,7 @@ public class EntryController {
         return entryBusiness.findAllByEntryDate(entryDate)
                 .stream()
                 .map(item -> new GetEntryResponse(
-                        item.name(), item.type(), item.value(), item.entryDate())
+                        item.name(), item.type(), item.entryValue(), item.entryDate())
                 )
                 .toList();
     }

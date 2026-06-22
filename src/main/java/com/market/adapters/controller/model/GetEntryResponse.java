@@ -7,6 +7,6 @@ import java.time.LocalDate;
 public record GetEntryResponse(
         String name,
         String type,
-        Double value,
+        Double entryValue,
         LocalDate entryDate) implements Entry {
 }

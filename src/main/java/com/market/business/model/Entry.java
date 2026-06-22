@@ -7,7 +7,7 @@ public interface Entry {
 
     String type();
 
-    Double value();
+    Double entryValue();
 
     LocalDate entryDate();
 }
