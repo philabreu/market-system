@@ -10,24 +10,21 @@ import jakarta.persistence.Table;
 
 import java.time.LocalDate;
 
+@Entity
 @Table(name = "entry")
-@Entity(name = "entry")
 public class EntryModel implements Entry {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "entry_name")
     private String name;
 
-    @Column(name = "entry_type")
     private String type;
 
     @Column(name = "entry_value")
     private Double entryValue;
 
-    @Column(name = "entry_date")
     private LocalDate entryDate;
 
     public EntryModel() {

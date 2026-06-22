@@ -50,7 +50,7 @@ public class EntryFacade implements EntryPort {
     @Override
     public void update(Entry entry, Long id) {
         EntryModel searchedEntry = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("lançamento não encontrado com id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("resource not found with id: " + id));
 
         BeanUtils.copyProperties(entry, searchedEntry, "id");
 
